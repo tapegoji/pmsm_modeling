@@ -1,0 +1,22 @@
+!------ Skeleton for body section -----
+Body 1
+  Name = WIRE
+End
+
+Body 2
+  Name = AIR
+End
+
+!------ Skeleton for boundary section -----
+Boundary Condition 1
+  Name = WIRE_ELECTRODE_1
+End
+
+Boundary Condition 2
+  Name = WIRE_ELECTRODE_2
+End
+
+Boundary Condition 3
+  Name = INFINITY
+End
+

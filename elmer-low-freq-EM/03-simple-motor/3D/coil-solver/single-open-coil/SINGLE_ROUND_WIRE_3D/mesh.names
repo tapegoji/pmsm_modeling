@@ -1,0 +1,7 @@
+! ----- names for bodies -----
+$ WIRE = 1
+$ AIR = 2
+! ----- names for boundaries -----
+$ WIRE_ELECTRODE_1 = 1
+$ WIRE_ELECTRODE_2 = 2
+$ INFINITY = 3

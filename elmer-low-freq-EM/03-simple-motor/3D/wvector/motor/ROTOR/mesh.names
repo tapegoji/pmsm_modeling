@@ -1,0 +1,6 @@
+! ----- names for bodies -----
+$ rotor_steel = 48
+$ rotor_aluminum = 49
+$ rotor_side_airgap = 50
+! ----- names for boundaries -----
+$ rotor_side_mortar_boundary = 51

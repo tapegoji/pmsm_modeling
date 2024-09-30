@@ -1,0 +1,30 @@
+!---------------------------------------------------------
+! Domain Definitions
+!---------------------------------------------------------
+
+Body 1
+  Name = WIRE
+  Material = 2
+  Equation = 1
+  Body Force = 1
+End
+
+Body 2
+  Name = AIR
+  Material = 1
+  Equation = 1
+End
+
+!---------------------------------------------------------
+! Boundary conditions
+!---------------------------------------------------------
+
+Boundary Condition 1
+  Name = INFINITY
+  A = Real 0
+End
+
+!---------------------------------------------------------
+! External Sources
+!---------------------------------------------------------
+Include "circuits/transient_2d_massive_current_source.definition"

@@ -1,0 +1,217 @@
+! Three Round wires - Massive wire
+! Transient Simulation
+! Author: Jonathan Velasco
+! Original date: August 2024
+!------------------------------------------------------
+Check Keywords "Warn"
+!---------------------------------------------------------
+!MESH DATA  
+!---------------------------------------------------------
+Header
+  Mesh DB "." "FULL_THREE_ROUND_WIRES"
+End
+!---------------------------------------------------------
+
+
+! ---------------------------------
+! Time discretization parameters
+! ---------------------------------
+$ freq = 50                        ! Electrical Frequency in Hz
+$ we = 2*pi*freq		   ! Electrical frequency in radians/sec
+$ phase = 0
+$ stepsPerPeriod = 25
+$ periods = 2
+$ nsteps = periods*stepsPerPeriod
+$ stepsize=(periods/freq)/nsteps
+
+
+!---------------------------------------------------------
+!SIMULATION CONFIGURATION 
+!---------------------------------------------------------
+
+Simulation
+  Max Output Level = 4
+  Coordinate System = Cartesian 2D
+  Coordinate Scaling = 1.0
+  Simulation Type = Transient
+  Timestepping Method = BDF
+  BDF Order = 2
+  Timestep Sizes = $ stepsize
+  Timestep Intervals = $ nsteps
+  Use Mesh Names = Logical True
+End
+!---------------------------------------------------------
+
+Constants
+  Permittivity of Vacuum = 8.8542e-12
+  Permeability of Vacuum = 1.256e-6
+End
+
+!---------------------------------------------------------
+
+!---------------------------------------
+! External Sources: Circuits 
+!-----------------------------------------
+Include "circuits/transient_2d_massive_current_source.definition"
+
+!---------------------------------------------------------
+! Domain Definitions
+!---------------------------------------------------------
+
+Body 1
+  Name = WIRE1p
+  Material = 2
+  Equation = 1
+  Body Force = 1
+End
+
+Body 2
+  Name = WIRE1m
+  Material = 2
+  Equation = 1
+  Body Force = 1
+End
+
+Body 3
+  Name = WIRE2p
+  Material = 2
+  Equation = 1
+  Body Force = 1
+End
+
+Body 4
+  Name = WIRE2m
+  Material = 2
+  Equation = 1
+  Body Force = 1
+End
+
+Body 5
+  Name = WIRE3p
+  Material = 2
+  Equation = 1
+  Body Force = 1
+End
+
+Body 6
+  Name = WIRE3m
+  Material = 2
+  Equation = 1
+  Body Force = 1
+End
+
+Body 7
+  Name = AIR
+  Material = 1
+  Equation = 1
+End
+
+!---------------------------------------------------------
+! Boundary conditions
+!---------------------------------------------------------
+
+Boundary Condition 1
+  Name = INFINITY
+  A = Real 0
+End
+
+!---------------------------------------------------------
+! Material Properties 
+!---------------------------------------------------------
+
+Material 1
+  Name = "Air2"
+  Electric Conductivity = 0.0
+  Relative Permittivity = 1.0
+  Relative Permeability = 1.0
+End
+
+Material 2
+  Name = "Copper"
+  Electric Conductivity = 5.8e7
+  Relative Permittivity = 1.0
+  Relative Permeability = 1.0 
+End
+
+!---------------------------------------------------------
+! Solver Configuration
+!---------------------------------------------------------
+
+Equation 1
+  Active Solvers(7) = 1 2 3 4 5 6 7
+End
+
+Solver 1
+	Exec Solver = Never !Before Timestep
+	Equation = MeshDeform
+	Procedure = "RigidMeshMapper" "RigidMeshMapper"
+End
+
+
+Solver 2
+  Exec Solver = Always
+  Equation = Circuits
+  Variable = X
+  No Matrix = Logical True  
+  Procedure = "CircuitsAndDynamics" "CircuitsAndDynamics"
+End
+
+
+Solver 3
+  Equation = MgDyn2D
+  Variable = A
+  Procedure = "MagnetoDynamics2D" "MagnetoDynamics2D"
+  
+  Linear System Solver = Direct
+  Linear System Direct Method = MUMPS
+
+  !Linear System Solver = Iterative
+  !Linear System Iterative Method  = BiCGstabL
+  !Linear System Preconditioning = Circuit
+  !Linear System Convergence Tolerance = 1.0e-6
+  !Linear System Max Iterations = 6000
+
+  ! Needed for strong coupling with circuits
+  Export Lagrange Multiplier = True
+
+  ! For projection
+ ! Apply Mortar BCs = Logical True
+
+End 
+
+Solver 4
+  Equation = CalcFields
+  Procedure = "MagnetoDynamics" "MagnetoDynamicsCalcFields"
+  Linear System Solver = Direct
+  Calculate Current Density = Logical True 
+  Calculate Magnetic Vector Potential = Logical True
+  Calculate Nodal Fields     = Logical True
+  Calculate Elemental Fields = Logical False 
+  Calculate Nodal Forces = Logical True
+End
+
+
+Solver 5
+  Equation = "ResultOutput"
+  Procedure = "ResultOutputSolve" "ResultOutputSolver"
+  Exec Solver = after saving 
+  Output File Name = single_wire
+  Output Directory = results_massive
+  Save Geometry Ids = Logical True
+  Vtu Format = Logical True
+End 
+
+Solver 6
+   Equation = Circuits Output
+   Procedure = "CircuitsAndDynamics" "CircuitsOutput"
+End
+
+Solver 7
+   Exec Solver = After Timestep
+   Procedure = "SaveData" "SaveScalars"
+   Filename = results_massive/w1.dat
+   Save Component Results = True 
+   Variable 1 = time
+End
+
+

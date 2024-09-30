@@ -1,0 +1,190 @@
+!------ Skeleton for body section -----
+Body 1
+  Name = winding_a_plus
+End
+
+Body 2
+  Name = winding_b_minus
+End
+
+Body 3
+  Name = winding_c_plus
+End
+
+Body 4
+  Name = winding_a_minus
+End
+
+Body 5
+  Name = winding_b_plus
+End
+
+Body 6
+  Name = winding_c_minus
+End
+
+Body 7
+  Name = stator_steel
+End
+
+Body 8
+  Name = stator_air
+End
+
+Body 9
+  Name = stator_side_airgap
+End
+
+!------ Skeleton for boundary section -----
+Boundary Condition 1
+  Name = stator_side_mortar_boundary
+End
+
+Boundary Condition 2
+  Name = infinity
+End
+
+Boundary Condition 3
+  Name = winding_a_plus_electrode1
+End
+
+Boundary Condition 4
+  Name = winding_a_plus_electrode2
+End
+
+Boundary Condition 5
+  Name = winding_a_plus_alpha0
+End
+
+Boundary Condition 6
+  Name = winding_a_plus_alpha1
+End
+
+Boundary Condition 7
+  Name = winding_a_plus_beta0
+End
+
+Boundary Condition 8
+  Name = winding_a_plus_beta1
+End
+
+Boundary Condition 9
+  Name = winding_b_minus_electrode2
+End
+
+Boundary Condition 10
+  Name = winding_b_minus_electrode1
+End
+
+Boundary Condition 11
+  Name = winding_b_minus_alpha0
+End
+
+Boundary Condition 12
+  Name = winding_b_minus_alpha1
+End
+
+Boundary Condition 13
+  Name = winding_b_minus_beta0
+End
+
+Boundary Condition 14
+  Name = winding_b_minus_beta1
+End
+
+Boundary Condition 15
+  Name = winding_c_plus_electrode1
+End
+
+Boundary Condition 16
+  Name = winding_c_plus_electrode2
+End
+
+Boundary Condition 17
+  Name = winding_c_plus_alpha0
+End
+
+Boundary Condition 18
+  Name = winding_c_plus_alpha1
+End
+
+Boundary Condition 19
+  Name = winding_c_plus_beta0
+End
+
+Boundary Condition 20
+  Name = winding_c_plus_beta1
+End
+
+Boundary Condition 21
+  Name = winding_a_minus_electrode2
+End
+
+Boundary Condition 22
+  Name = winding_a_minus_electrode1
+End
+
+Boundary Condition 23
+  Name = winding_a_minus_alpha0
+End
+
+Boundary Condition 24
+  Name = winding_a_minus_alpha1
+End
+
+Boundary Condition 25
+  Name = winding_a_minus_beta0
+End
+
+Boundary Condition 26
+  Name = winding_a_minus_beta1
+End
+
+Boundary Condition 27
+  Name = winding_b_plus_electrode1
+End
+
+Boundary Condition 28
+  Name = winding_b_plus_electrode2
+End
+
+Boundary Condition 29
+  Name = winding_b_plus_alpha0
+End
+
+Boundary Condition 30
+  Name = winding_b_plus_alpha1
+End
+
+Boundary Condition 31
+  Name = winding_b_plus_beta0
+End
+
+Boundary Condition 32
+  Name = winding_b_plus_beta1
+End
+
+Boundary Condition 33
+  Name = winding_c_minus_electrode2
+End
+
+Boundary Condition 34
+  Name = winding_c_minus_electrode1
+End
+
+Boundary Condition 35
+  Name = winding_c_minus_alpha0
+End
+
+Boundary Condition 36
+  Name = winding_c_minus_alpha1
+End
+
+Boundary Condition 37
+  Name = winding_c_minus_beta0
+End
+
+Boundary Condition 38
+  Name = winding_c_minus_beta1
+End
+

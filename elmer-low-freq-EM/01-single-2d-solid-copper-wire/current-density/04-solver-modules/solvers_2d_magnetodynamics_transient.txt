@@ -1,0 +1,46 @@
+!---------------------------------------------------------
+! Solver Configuration
+!---------------------------------------------------------
+
+Equation 1
+  Active Solvers(4) = 1 2 3 4
+End
+
+Solver 1
+  Equation = MgDyn2D
+  Variable = A
+  Procedure = "MagnetoDynamics2D" "MagnetoDynamics2D"
+  
+  Linear System Solver = Direct
+  Linear System Direct Method = MUMPS
+
+End 
+
+Solver 2
+  Equation = CalcFields
+  Procedure = "MagnetoDynamics" "MagnetoDynamicsCalcFields"
+  Linear System Solver = Direct
+  Calculate Current Density = Logical True 
+  Calculate Magnetic Vector Potential = Logical True
+  Calculate Nodal Fields     = Logical True
+  Calculate Elemental Fields = Logical False 
+  Calculate Nodal Forces = Logical True
+End
+
+Solver 3
+  Equation = "ResultOutput"
+  Procedure = "ResultOutputSolve" "ResultOutputSolver"
+  Exec Solver = after saving 
+  Output File Name = single_wire_body_force
+  Output Directory = results
+  Save Geometry Ids = Logical True
+  Vtu Format = Logical True
+End 
+
+Solver 4
+   Exec Solver = After Timestep
+   Procedure = "SaveData" "SaveScalars"
+   Filename = results/w1.dat
+   Save Component Results = True 
+   Variable 1 = time
+End

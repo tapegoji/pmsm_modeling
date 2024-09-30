@@ -1,0 +1,34 @@
+!------ Skeleton for body section -----
+Body 1
+  Name = WIRE1p
+End
+
+Body 2
+  Name = WIRE1m
+End
+
+Body 3
+  Name = WIRE2p
+End
+
+Body 4
+  Name = WIRE2m
+End
+
+Body 5
+  Name = WIRE3p
+End
+
+Body 6
+  Name = WIRE3m
+End
+
+Body 7
+  Name = AIR
+End
+
+!------ Skeleton for boundary section -----
+Boundary Condition 1
+  Name = INFINITY
+End
+

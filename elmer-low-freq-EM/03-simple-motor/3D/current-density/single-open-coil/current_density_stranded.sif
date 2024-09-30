@@ -1,0 +1,206 @@
+! Single Straight Round Stranded wire
+! Transient Simulation
+! Author: Jonathan Velasco
+! Original date: August 2024
+!------------------------------------------------------
+Check Keywords "Warn"
+!---------------------------------------------------------
+!MESH DATA  
+!---------------------------------------------------------
+Header
+  Mesh DB "." "SINGLE_ROUND_WIRE_3D"
+End
+!---------------------------------------------------------
+
+
+! ---------------------------------
+! Time discretization parameters
+! ---------------------------------
+$ freq = 50                        ! Electrical Frequency in Hz
+$ we = 2*pi*freq		   ! Electrical frequency in radians/sec
+$ phase = 0
+$ stepsPerPeriod = 25
+$ periods = 2
+$ nsteps = periods*stepsPerPeriod
+$ stepsize=(periods/freq)/nsteps
+$ I0 = 1                       ! Total Net Current 
+$ radius = 0.5e-3              ! Conductor Radius
+$ Area = pi*radius^2           ! Area of round conductor
+$ wire_length = 1e-2           !
+$ Je = I0/Area                 ! Magnitude of external current density in A/m^2
+
+
+!---------------------------------------------------------
+!SIMULATION CONFIGURATION 
+!---------------------------------------------------------
+
+Simulation
+  Max Output Level = 4
+  Coordinate System = Cartesian 3D
+  Coordinate Scaling = 1.0
+  Simulation Type = Transient
+  Timestepping Method = BDF
+  BDF Order = 2
+  Timestep Sizes = $ stepsize
+  Timestep Intervals = $ nsteps
+  Use Mesh Names = Logical True
+End
+!---------------------------------------------------------
+
+Constants
+  Permittivity of Vacuum = 8.8542e-12
+  Permeability of Vacuum = 1.256e-6
+End
+
+Initial Condition 1
+  AV = 0.0      ! sets electric scalar potential to zero
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+  Jfix  = Real 0.0
+End
+
+!---------------------------------------------------------
+
+!---------------------------------------
+! External Sources: Current Density
+!-----------------------------------------
+Body Force 1
+   Current Density 1 = 0
+   Current Density 2 = 0
+   Current Density 3 = Variable "time"
+         Real MATC "Je*sin(we*tx)"
+End 
+
+!---------------------------------------------------------
+! Domain Definitions
+!---------------------------------------------------------
+
+Body 1
+  Name = WIRE
+  Material = 2
+  Equation = 1
+  Initial Condition = 1
+  Body Force = 1
+End
+
+Body 2
+  Name = AIR
+  Material = 1
+  Equation = 1
+  Initial Condition = 1
+End
+
+
+!---------------------------------------------------------
+! Boundary conditions
+!---------------------------------------------------------
+
+Boundary Condition 1
+  Name = WIRE_ELECTRODE_1
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 2
+  Name = WIRE_ELECTRODE_2
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 3
+  Name = INFINITY
+  AV = 0.0      ! sets electric scalar potential to zero
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+  Jfix  = Real 0.0
+End
+
+!---------------------------------------------------------
+! Material Properties 
+!---------------------------------------------------------
+
+Material 1
+  Name = "Air"
+  Electric Conductivity = 0.0
+  Relative Permittivity = 1.0
+  Relative Permeability = 1.0
+End
+
+Material 2
+  Name = "Artificial Material for CoilSolver"
+  Electric Conductivity = 1.0e-2
+  Relative Permittivity = 1.0
+  Relative Permeability = 1.0
+End
+
+
+!---------------------------------------------------------
+! Solver Configuration
+!---------------------------------------------------------
+
+Equation 1
+  Name = "MagnetoDynamics"
+  Active Solvers(4) = 1 2 3 4
+End
+
+Solver 1  !---- MagnetoDynamics, WhitneyAVSolver
+   Exec Solver = Always
+   Equation = "MGDynamics"
+   Variable = "AV"
+   Procedure = "MagnetoDynamics" "WhitneyAVSolver"
+   NonLinear System Relaxation Factor=1
+   Export Lagrange Multiplier = Logical True
+   Linear System Solver = Iterative
+   Linear System Iterative Method = BicgstabL
+   Linear System preconditioning = circuit
+   Linear System Convergence Tolerance = 1.e-8
+   Linear System Max Iterations = 3000
+   Linear System Residual Output = 1000
+   Linear System ILUT Tolerance=1e-8
+   BicgstabL polynomial degree = 6
+   Steady State Convergence Tolerance = 1e-08
+End
+
+Solver 2  !---- MagnetoAndDynamics, MagnetoDynamicsCalcFields
+  Exec Solver = Always
+  Equation = MGDynamicsCalc
+  Procedure = "MagnetoDynamics" "MagnetoDynamicsCalcFields"
+  
+  Potential Variable = String "AV"
+  Steady State Convergence Tolerance = 1.0e-8
+  
+  Linear System Solver = Iterative
+  Linear System Symmetric = True
+  Linear System Iterative Method = CG
+  Linear System Max Iterations = 5000
+  Linear System Convergence Tolerance = 1.0e-8
+  Linear System Preconditioning = ILU0
+  Linear System ILUT Tolerance = 1.0e-3
+  Linear System Abort Not Converged = False
+  Linear System Residual Output = 1
+  Linear System Precondition Recompute = 1
+  Discontinuous Bodies = Logical True
+  
+  Calculate Elemental Fields = Logical True
+  Calculate Current Density = Logical True
+End
+
+Solver 3  !---- ResultOuputSolve, ResultOuputSolver
+   Exec Solver = After timestep
+   Equation = "ResultOutput"
+   Procedure = "ResultOutputSolve" "ResultOutputSolver"
+   
+   Vtu Format = Logical True
+   Binary Output = Logical True
+!  Discontinuous Bodies = Logical True
+   Output Directory = results_stranded
+   Output File Name = File "stranded_coil"
+   
+   Save Geometry Ids = Logical True 
+End
+
+Solver 4
+   Exec Solver = After Timestep
+   Procedure = "SaveData" "SaveScalars"
+   Filename = results_stranded/w1.dat
+   Save Component Results = True 
+   Variable 1 = time
+End
+
+

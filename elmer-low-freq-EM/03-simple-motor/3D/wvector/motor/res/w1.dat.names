@@ -1,0 +1,48 @@
+Metadata for SaveScalars file: res/w1.dat
+Elmer version: 9.0
+Elmer revision: 583175bfd
+Elmer compilation date: 2024-09-13
+Solver input file: transient_with_circuits.sif
+File started at: 2024/09/27 17:14:47
+ 
+Variables in columns of matrix: 
+   1: res: eddy current power
+   2: res: electromagnetic field energy
+   3: res: time
+   4: res: i_v1
+   5: res: i_component(1)
+   6: res: i_component(2)
+   7: res: v_v1
+   8: res: v_component(1)
+   9: res: v_component(2)
+  10: res: u_1_circuit_1
+  11: res: u_3_circuit_1
+  12: res: r_component(1)
+  13: res: p_dc_component(1)
+  14: res: r_component(2)
+  15: res: p_dc_component(2)
+  16: res: i_v2
+  17: res: i_component(3)
+  18: res: i_component(4)
+  19: res: v_v2
+  20: res: v_component(3)
+  21: res: v_component(4)
+  22: res: u_1_circuit_2
+  23: res: u_3_circuit_2
+  24: res: r_component(3)
+  25: res: p_dc_component(3)
+  26: res: r_component(4)
+  27: res: p_dc_component(4)
+  28: res: i_v3
+  29: res: i_component(5)
+  30: res: i_component(6)
+  31: res: v_v3
+  32: res: v_component(5)
+  33: res: v_component(6)
+  34: res: u_1_circuit_3
+  35: res: u_3_circuit_3
+  36: res: r_component(5)
+  37: res: p_dc_component(5)
+  38: res: r_component(6)
+  39: res: p_dc_component(6)
+  40: component 7: res: magnetic torque

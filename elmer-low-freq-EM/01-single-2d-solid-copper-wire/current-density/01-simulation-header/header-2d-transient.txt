@@ -1,0 +1,41 @@
+! Single copper wire Magnetodynamics Model
+! Dimensions: 2D
+! Transient Simulation
+! Author: Jonathan Velasco
+! Original date: August 2024
+!------------------------------------------------------
+Check Keywords "Warn"
+!---------------------------------------------------------
+!MESH DATA  
+!---------------------------------------------------------
+Header
+  Mesh DB "." "SINGLE-ROUND-WIRE"
+End
+!---------------------------------------------------------
+
+
+!---------------------------------------------------------
+!Parameters
+!---------------------------------------------------------
+$ I0 = 1                       ! Total Net Current 
+$ radius = 0.5e-3              ! Conductor Radius
+$ Area = pi*radius^2           ! Area of round conductor
+$ nSteps = 5                   ! number of steps
+$ nPeriods= 2		       ! Number of periods
+$ stepSize = 1e-3
+!---------------------------------------------------------
+!SIMULATION CONFIGURATION 
+!---------------------------------------------------------
+
+Simulation
+  Max Output Level = 4
+  Coordinate System = Cartesian 2D
+  Coordinate Scaling = 1.0
+  Simulation Type = Transient
+  Timestepping Method = BDF
+  BDF Order = 2
+  Timestep Sizes = $stepSize
+  Timestep Intervals = $nSteps
+  Use Mesh Names = Logical True
+End
+!---------------------------------------------------------

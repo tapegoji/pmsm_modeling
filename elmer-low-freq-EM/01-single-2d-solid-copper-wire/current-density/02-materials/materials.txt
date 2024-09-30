@@ -1,0 +1,17 @@
+!---------------------------------------------------------
+! Material Properties 
+!---------------------------------------------------------
+
+Material 1
+  Name = "Air"
+  Electric Conductivity = 0.0
+  Relative Permittivity = 1.0
+  Relative Permeability = 1.0
+End
+
+Material 2
+  Name = "Copper"
+  Electric Conductivity = 5.8e7
+  Relative Permittivity = 1.0
+  Relative Permeability = 1.0 
+End

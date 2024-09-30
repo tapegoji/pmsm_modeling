@@ -1,0 +1,11 @@
+Metadata for SaveScalars file: results_stranded/w1.dat
+Elmer version: 9.0
+Elmer revision: 583175bfd
+Elmer compilation date: 2024-09-13
+Solver input file: current_density_stranded.sif
+File started at: 2024/09/27 18:18:43
+ 
+Variables in columns of matrix: 
+   1: value: time scalar variable
+   2: res: eddy current power
+   3: res: electromagnetic field energy

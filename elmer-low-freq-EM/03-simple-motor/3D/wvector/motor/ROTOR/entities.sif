@@ -1,0 +1,18 @@
+!------ Skeleton for body section -----
+Body 1
+  Name = rotor_steel
+End
+
+Body 2
+  Name = rotor_aluminum
+End
+
+Body 3
+  Name = rotor_side_airgap
+End
+
+!------ Skeleton for boundary section -----
+Boundary Condition 1
+  Name = rotor_side_mortar_boundary
+End
+

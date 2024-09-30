@@ -1,0 +1,562 @@
+! 2 Pole TEAM30A - 3D
+! Simulation type: Transient Simulation 
+! Power Source: Three phase voltage source via circuit definition
+! Author: Jonathan Velasco
+! Original date: September 2024
+!------------------------------------------------------
+Check Keywords "Warn"
+!---------------------------------------------------------
+!MESH DATA  
+!---------------------------------------------------------
+Header
+  Mesh DB "." "TEAM30A-3D"
+End
+!---------------------------------------------------------
+
+
+!---------------------------------------------------------
+! Rotating machine parameters
+!---------------------------------------------------------
+$ rpm = 9549.3                 ! Rotational speed (1/min)
+$ WM = 2*pi*rpm/60             ! Mechanical Frequency [rad/s]
+$ PP = 1                       ! Pole pairs
+$ DegreesPerSec = WM*180.0/pi  !
+$ RotorInitPos = 0             ! Initial Rotor Position
+$ f = rpm/60*PP                ! Electrical frequency (Hz)
+$ we = 2*pi*f                  ! Electrical frequency in rad/s
+$ rot_dir = 1 ! Direction of rotation. 1: CCW, -1: CW
+$ Mangle1 = 45.0     ! Magnetization Angle [deg]
+
+! ------------------------------------
+! Permanent Magnet information
+! Recoma 26HE
+! ------------------------------------
+$ Br = 1.07 ! [T]
+$ M_PM = Br/4*pi*1e-7 ! Magnetization Vector's Amplitude in A/m
+
+! ---------------------------------
+! Time discretization parameters
+! ---------------------------------
+$ stepsPerPeriod = 1000
+$ Periods = 1
+$ nSteps = Periods*stepsPerPeriod
+$ stepSize = (Periods/f)/nSteps
+
+!---------------------------------------------------------
+!SIMULATION CONFIGURATION 
+!---------------------------------------------------------
+
+Simulation
+  Max Output Level = 4
+  Coordinate System = Cartesian 3D
+  Coordinate Scaling = 1.0
+  Simulation Type = Transient
+  Timestepping Method = BDF
+  BDF Order = 2
+  Timestep Sizes = $ stepSize
+  Timestep Intervals = $ nSteps
+  Use Mesh Names = Logical True
+End
+!---------------------------------------------------------
+
+Constants
+  Permittivity of Vacuum = 8.8542e-12
+  Permeability of Vacuum = 1.256e-6
+End
+
+Initial Condition 1
+   A {e} = Real 0
+   Jfix  = Real 0.0
+End
+!---------------------------------------------------------
+
+
+Body 1
+  Name = winding_a_plus
+  Material = 5
+  Equation = 2
+  Body Force = 1
+  Initial Condition = 1
+End
+
+Body 2
+  Name = winding_b_minus
+  Material = 5
+  Equation = 2
+  Body Force = 1
+  Initial Condition = 1
+End
+
+Body 3
+  Name = winding_c_plus
+  Material = 5
+  Equation = 2
+  Body Force = 1
+  Initial Condition = 1
+End
+
+Body 4
+  Name = winding_a_minus
+  Material = 5
+  Equation = 2
+  Body Force = 1
+  Initial Condition = 1
+End
+
+Body 5
+  Name = winding_b_plus
+  Material = 5
+  Equation = 2
+  Body Force = 1
+  Initial Condition = 1
+End
+
+Body 6
+  Name = winding_c_minus
+  Material = 5
+  Equation = 2
+  Body Force = 1
+  Initial Condition = 1
+End
+
+Body 7
+  Name = stator_steel
+  Material = 4
+  Equation = 1
+  Initial Condition = 1
+End
+
+Body 8
+  Name = stator_air
+  Material = 1
+  Equation = 1
+  Initial Condition = 1
+End
+
+Body 9
+  Name = stator_side_airgap
+  Material = 1
+  Equation = 1
+  Initial Condition = 1
+End
+
+Body 10
+  Name = rotor_steel
+  Material = 2
+  Equation = 1
+  Body Force = 2
+  Initial Condition = 1
+End
+
+Body 11
+  Name = rotor_aluminum ! using steel instead
+  Material = 3
+  Equation = 1
+  Body Force = 2
+  Initial Condition = 1
+End
+
+Body 12
+  Name = rotor_side_airgap
+  Material = 1
+  Equation = 1
+  Body Force = 2
+  Initial Condition = 1
+End
+
+
+!---------------------------------------------------------
+! Boundary conditions
+!---------------------------------------------------------
+
+
+Boundary Condition 1
+  Name = stator_side_mortar_boundary
+End
+
+Boundary Condition 2
+  Name = infinity
+  AV = 0.0      ! sets electric scalar potential to zero
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+  Jfix  = Real 0.0
+End
+
+Boundary Condition 3
+  Name = winding_a_plus_electrode1 !-- Gamma1
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 4
+  Name = winding_a_plus_electrode2 !-- Gamma0
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 5
+  Name = winding_a_plus_alpha0
+  !Body 1: Alpha = Real 0
+End
+
+Boundary Condition 6
+  Name = winding_a_plus_alpha1
+  !Body 1: Alpha = Real 1
+End
+
+Boundary Condition 7
+  Name = winding_a_plus_beta0
+  !Body 1: Beta = Real 0
+End
+
+Boundary Condition 8
+  Name = winding_a_plus_beta1 
+  !Body 1: Beta = Real 1
+End
+
+Boundary Condition 9
+  Name = winding_b_minus_electrode1 !-- Gamma1
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 10
+  Name = winding_b_minus_electrode2 !-- Gamma0
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 11
+  Name = winding_b_minus_alpha0
+  !Body 2: Alpha = Real 0
+End
+
+Boundary Condition 12
+  Name = winding_b_minus_alpha1
+  !Body 2: Alpha = Real 1
+End
+
+Boundary Condition 13
+  Name = winding_b_minus_beta0
+  !Body 2: Beta = Real 0
+End
+
+Boundary Condition 14
+  Name = winding_b_minus_beta1
+  !Body 2: Beta = Real 1
+End
+
+
+Boundary Condition 15
+  Name = winding_c_plus_electrode1 !-- Gamma1
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 16
+  Name = winding_c_plus_electrode2 !-- Gamma0
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 17
+  Name = winding_c_plus_alpha0
+  !Body 3: Alpha = Real 0
+End
+
+Boundary Condition 18
+  Name = winding_c_plus_alpha1
+  !Body 3: Alpha = Real 1
+End
+
+Boundary Condition 19
+  Name = winding_c_plus_beta0
+  !Body 3: Beta = Real 0
+End
+
+Boundary Condition 20
+  Name = winding_c_plus_beta1
+  !Body 3: Beta = Real 1
+End
+
+Boundary Condition 21
+  Name = rotor_side_mortar_boundary
+  
+  Mortar BC Static = Logical True
+  Rotational Projector = Logical True
+  Galerkin Projector = Logical True
+ 
+  Mortar BC = Integer 1
+  
+End
+
+Boundary Condition 22
+  Name = winding_a_minus_electrode1 !-- Gamma1
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 23
+  Name = winding_a_minus_electrode2 !-- Gamma0
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 24
+  Name = winding_a_minus_alpha0
+  !Body 4: Alpha = Real 0
+End
+
+Boundary Condition 25
+  Name = winding_a_minus_alpha1
+  !Body 4: Alpha = Real 1
+End
+
+Boundary Condition 26
+  Name = winding_a_minus_beta0
+  !Body 4: Beta = Real 0
+End
+
+Boundary Condition 27
+  Name = winding_a_minus_beta1
+  !Body 4: Beta = Real 1
+End
+
+Boundary Condition 28
+  Name = winding_b_plus_electrode1 !-- Gamma1
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 29
+  Name = winding_b_plus_electrode2 !-- Gamma0
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 30
+  Name = winding_b_plus_alpha0
+  Body 5: Alpha = Real 0
+End
+
+Boundary Condition 31
+  Name = winding_b_plus_alpha1
+  !Body 5: Alpha = Real 1
+End
+
+Boundary Condition 32
+  Name = winding_b_plus_beta0
+  !Body 5: Beta = Real 0
+End
+
+Boundary Condition 33
+  Name = winding_b_plus_beta1
+  !Body 5: Beta = Real 1
+End
+
+Boundary Condition 34
+  Name = winding_c_minus_electrode1 !-- Gamma1
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 35
+  Name = winding_c_minus_electrode2 !-- Gamma0
+  AV {e} = 0.0 ! sets magnetic vector potential to zero
+End
+
+Boundary Condition 36
+  Name = winding_c_minus_alpha0
+  !Body 6: Alpha = Real 0
+End
+
+Boundary Condition 37
+  Name = winding_c_minus_alpha1
+  !Body 6: Alpha = Real 1
+End
+
+Boundary Condition 38
+  Name = winding_c_minus_beta0
+  !Body 6: Beta = Real 0
+End
+
+Boundary Condition 39
+  Name = winding_c_minus_beta1
+  !Body 6: Beta = Real 1
+End
+
+!---------------------------------------------------------
+!Sources (Coming from circuit definition)
+!---------------------------------------------------------
+
+! Body Force 1 is defined within the circuit definition
+! All circuits should always be under Body Force 1
+Include "circuits/transient_3d_stranded_3ph_voltage_source.definition"
+
+Body Force 2
+! Rotor rotation
+  Mesh Rotate 3 = Variable "time", "timestep size"
+     Real MATC "RotorInitPos+rot_dir*(tx(0)-tx(1))*DegreesPerSec"
+
+End 
+
+
+! Torque Calculation Method 2:
+! Rotor Component for torque calculation using
+! the sum of nodal forces in rotating domains
+! The postprocessing quantity is obtained via the CalcFields Solver
+! Note: Components 1-6 are under the circuit definitions.
+
+Component 7
+  Name = String "Rotating_Domains"
+  Master Bodies(2) = Integer 10 11
+  Calculate Magnetic Torque = Logical true
+End
+
+
+!---------------------------------------------------------
+! Material Properties 
+!---------------------------------------------------------
+
+Material 1
+  Name = "Air"
+  Electric Conductivity = 0.0
+  Relative Permittivity = 1.0
+  Relative Permeability = 1.0
+End
+
+Material 2
+  Name = "Rotor_Steel"
+  Electric Conductivity = 1.6e6
+  Relative Permittivity = 1.0
+  Relative Permeability = 30.0
+End
+
+Material 3
+  Name = "Rotor_Aluminum"
+  Electric Conductivity = 3.72e7
+  Relative Permittivity = 1.0
+  Relative Permeability = 1.0
+End
+
+Material 4
+  Name = "Stator_Steel"
+  Electric Conductivity = 0.0
+  Relative Permittivity = 1.0
+  Relative Permeability = 30.0
+End
+
+Material 5
+  Name = "Dummy material for Coil Solver + Stranded Coils"
+  Electric Conductivity = 1.0
+  Relative Permittivity = 1.0
+  Relative Permeability = 30.0
+End
+
+!---------------------------------------------------------
+! Solver Configuration
+!---------------------------------------------------------
+
+Equation 1
+  Name = "MagnetoDynamic for rest of the model"
+  Active Solvers(6) = 1 4 5 6 7 8
+End
+
+Equation 2
+  Name = "MagnetoDynamic for coil"
+  Active Solvers(8) = 1 2 3 4 5 6 7 8
+End
+
+Solver 1
+   Exec Solver = Before Timestep
+   Equation = MeshDeform
+   Procedure = "RigidMeshMapper" "RigidMeshMapper"
+End
+
+Solver 2  !---- CoilSolver, CoilSolver
+  Exec Solver = Before timestep
+  Equation = "CoilSolver"
+  Procedure = "CoilSolver" "CoilSolver"
+
+  Linear System Solver = "Iterative"
+  Linear System Preconditioning = ilu1
+  Linear System Max Iterations = 1000
+  Linear System Convergence Tolerance = 1e-10
+  Linear System Iterative Method = BiCGStabL
+  Linear System Residual Output = 20
+  Steady State Convergence Tolerance = 1e-06
+
+  !Normalize Coil Current = True
+  
+End
+Solver 3  !---- CircuitsAndDynamics, CircuitsAndDynamics
+   Exec Solver = Always
+   Equation = Circuits
+   Variable = X
+   No Matrix = Logical True
+   Procedure = "CircuitsAndDynamics" "CircuitsAndDynamics"
+   Use Elemental CoilCurrent = True
+End
+Solver 4  !---- MagnetoDynamics, WhitneyAVSolver
+   Exec Solver = Always
+   Equation = "MGDynamics"
+   Variable = "AV"
+   Procedure = "MagnetoDynamics" "WhitneyAVSolver"
+   NonLinear System Relaxation Factor=1
+   Linear System Solver = Iterative
+   Linear System Iterative Method = BicgstabL
+   Linear System preconditioning = circuit
+   Linear System Convergence Tolerance = 1.e-8
+   Linear System Max Iterations = 3000
+   Linear System Residual Output = 1000
+   Linear System ILUT Tolerance=1e-8
+   BicgstabL polynomial degree = 6
+   Steady State Convergence Tolerance = 1e-08
+   
+  ! Needed for strong coupling with circuits
+  Export Lagrange Multiplier = True
+
+  ! For projection
+  Apply Mortar BCs = Logical True
+End
+
+Solver 5  !---- MagnetoAndDynamics, MagnetoDynamicsCalcFields
+  Exec Solver = Always
+  Equation = MGDynamicsCalc
+  Procedure = "MagnetoDynamics" "MagnetoDynamicsCalcFields"
+  
+  Potential Variable = String "AV"
+  Steady State Convergence Tolerance = 1.0e-8
+  
+  Linear System Solver = Iterative
+  Linear System Symmetric = True
+  Linear System Iterative Method = CG
+  Linear System Max Iterations = 5000
+  Linear System Convergence Tolerance = 1.0e-8
+  Linear System Preconditioning = ILU0
+  Linear System ILUT Tolerance = 1.0e-3
+  Linear System Abort Not Converged = False
+  Linear System Residual Output = 1
+  Linear System Precondition Recompute = 1
+  Discontinuous Bodies = Logical True
+  
+  Calculate Elemental Fields = Logical True
+  !Calculate Current Density = Logical True 
+  Calculate Magnetic Vector Potential = Logical True
+ 
+End
+Solver 6  !---- CircuitsAndDynamics, CircuitsOutput
+   Exec Solver = Always
+   Equation = Circuits Output
+   Procedure = "CircuitsAndDynamics" "CircuitsOutput"
+End
+Solver 7  !---- ResultOuputSolve, ResultOuputSolver
+   Exec Solver = After timestep
+   Equation = "ResultOutput"
+   Procedure = "ResultOutputSolve" "ResultOutputSolver"
+   
+   Vtu Format = Logical True
+   Binary Output = Logical True
+!  Discontinuous Bodies = Logical True
+   Output Directory = results
+   Output File Name = File "stranded_coilsolver"
+   
+   Save Geometry Ids = Logical True 
+End
+
+Solver 8
+   Exec Solver = After Timestep
+   Procedure = "SaveData" "SaveScalars"
+   Filename = results/w1.dat
+   Save Component Results = True 
+   Variable 1 = time
+End
+

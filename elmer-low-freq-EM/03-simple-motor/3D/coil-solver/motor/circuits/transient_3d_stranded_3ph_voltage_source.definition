@@ -1,0 +1,345 @@
+! -----------------------------------------------------------------------------
+! ElmerFEM Circuit Generated: September 21, 2024
+! -----------------------------------------------------------------------------
+
+! -----------------------------------------------------------------------------
+! Number of Circuits in Model
+! -----------------------------------------------------------------------------
+$ Circuits = 3
+$ Electrode_Area = 1
+! -----------------------------------------------------------------------------
+! Parameters
+! -----------------------------------------------------------------------------
+
+! General Parameters 
+$ V1 = 1000.0
+
+! Parameters in Component 1: T1p
+$ N_T1p = 20	 ! Number of Turns
+$ R_T1p = 0.021952405943709705	 ! Coil Resistance
+$ Ns_T1p = 1	 ! Sector/Symmetry Coefficient (e.g. 4 is 1/4 of the domain)
+! Parameters in Component 2: T1m
+$ N_T1m = 20	 ! Number of Turns
+$ R_T1m = 0.021952405943709705	 ! Coil Resistance
+$ Ns_T1m = 1	 ! Sector/Symmetry Coefficient (e.g. 4 is 1/4 of the domain)
+
+! -----------------------------------------------------------------------------
+! Matrix Size Declaration and Matrix Initialization
+! -----------------------------------------------------------------------------
+$ C.1.variables = 8
+$ C.1.perm = zeros(C.1.variables)
+$ C.1.A = zeros(C.1.variables,C.1.variables)
+$ C.1.B = zeros(C.1.variables,C.1.variables)
+
+! -----------------------------------------------------------------------------
+! Dof/Unknown Vector Definition
+! -----------------------------------------------------------------------------
+$ C.1.name.1 = "i_V1"
+$ C.1.name.2 = "i_component(1)"
+$ C.1.name.3 = "i_component(2)"
+$ C.1.name.4 = "v_V1"
+$ C.1.name.5 = "v_component(1)"
+$ C.1.name.6 = "v_component(2)"
+$ C.1.name.7 = "u_1_circuit_1"
+$ C.1.name.8 = "u_3_circuit_1"
+
+! -----------------------------------------------------------------------------
+! Source Vector Definition
+! -----------------------------------------------------------------------------
+$ C.1.source.8 = "V1_Source"
+
+! -----------------------------------------------------------------------------
+! KCL Equations
+! -----------------------------------------------------------------------------
+$ C.1.B(0,0) = 1
+$ C.1.B(0,1) = -1
+$ C.1.B(1,1) = 1
+$ C.1.B(1,2) = 1
+
+! -----------------------------------------------------------------------------
+! KVL Equations
+! -----------------------------------------------------------------------------
+$ C.1.B(2,3) = 1
+$ C.1.B(2,6) = 1
+$ C.1.B(3,4) = -1
+$ C.1.B(3,6) = -1
+$ C.1.B(3,7) = 1
+
+! -----------------------------------------------------------------------------
+! Component Equations
+! -----------------------------------------------------------------------------
+$ C.1.B(6,5) = -1
+$ C.1.B(6,7) = 1
+$ C.1.B(7,3) = 1
+
+
+! -----------------------------------------------------------------------------
+! Additions in SIF file
+! -----------------------------------------------------------------------------
+Component 1
+  Name = "T1p"
+  Master Bodies Name = winding_a_plus
+  Coil Type = "Stranded"
+  Number of Turns = Real $ N_T1p
+  Resistance = Real $ R_T1p
+ 
+  ! Additions for 3D Coil
+  Electrode Boundaries(2) = Integer 3 4
+  !Circuit Equation Voltage Factor = Real 0.5 !(use for symmetry, e.g. half of the coil)
+  
+  !Coil Use W Vector = Logical True
+  !W Vector Variable Name = String "CoilCurrent e"
+  !Electrode Area = Real $ Electrode_Area
+  !Coil Normal(3) = Real 1. 1. 0
+  !Master Bodies(1) = Integer 1
+End 
+
+Component 2
+  Name = "T1m"
+  Master Bodies Name = winding_a_minus
+  Coil Type = "Stranded"
+  Number of Turns = Real $ N_T1m
+  Resistance = Real $ R_T1m
+ 
+  ! Additions for 3D Coil
+  Electrode Boundaries(2) = Integer 22 23
+  !Circuit Equation Voltage Factor = Real 0.5 !(use for symmetry, e.g. half of the coil)
+  
+  !Coil Use W Vector = Logical True
+  !W Vector Variable Name = String "CoilCurrent e"
+  !Electrode Area = Real $ Electrode_Area
+  !Coil Normal(3) = Real 1. 1. 0
+  !Master Bodies(1) = Integer 4
+
+End 
+
+! -----------------------------------------------------------------------------
+! Parameters
+! -----------------------------------------------------------------------------
+
+! General Parameters 
+$ V2 = 1000.0
+
+! Parameters in Component 3: T2p
+$ N_T2p = 20	 ! Number of Turns
+$ R_T2p = 0.021952405943709705	 ! Coil Resistance
+$ Ns_T2p = 1	 ! Sector/Symmetry Coefficient (e.g. 4 is 1/4 of the domain)
+! Parameters in Component 4: T2m
+$ N_T2m = 20	 ! Number of Turns
+$ R_T2m = 0.021952405943709705	 ! Coil Resistance
+$ Ns_T2m = 1	 ! Sector/Symmetry Coefficient (e.g. 4 is 1/4 of the domain)
+
+! -----------------------------------------------------------------------------
+! Matrix Size Declaration and Matrix Initialization
+! -----------------------------------------------------------------------------
+$ C.2.variables = 8
+$ C.2.perm = zeros(C.2.variables)
+$ C.2.A = zeros(C.2.variables,C.2.variables)
+$ C.2.B = zeros(C.2.variables,C.2.variables)
+
+! -----------------------------------------------------------------------------
+! Dof/Unknown Vector Definition
+! -----------------------------------------------------------------------------
+$ C.2.name.1 = "i_V2"
+$ C.2.name.2 = "i_component(3)"
+$ C.2.name.3 = "i_component(4)"
+$ C.2.name.4 = "v_V2"
+$ C.2.name.5 = "v_component(3)"
+$ C.2.name.6 = "v_component(4)"
+$ C.2.name.7 = "u_1_circuit_2"
+$ C.2.name.8 = "u_3_circuit_2"
+
+! -----------------------------------------------------------------------------
+! Source Vector Definition
+! -----------------------------------------------------------------------------
+$ C.2.source.8 = "V2_Source"
+
+! -----------------------------------------------------------------------------
+! KCL Equations
+! -----------------------------------------------------------------------------
+$ C.2.B(0,0) = 1
+$ C.2.B(0,1) = -1
+$ C.2.B(1,1) = 1
+$ C.2.B(1,2) = 1
+
+! -----------------------------------------------------------------------------
+! KVL Equations
+! -----------------------------------------------------------------------------
+$ C.2.B(2,3) = 1
+$ C.2.B(2,6) = 1
+$ C.2.B(3,4) = -1
+$ C.2.B(3,6) = -1
+$ C.2.B(3,7) = 1
+
+! -----------------------------------------------------------------------------
+! Component Equations
+! -----------------------------------------------------------------------------
+$ C.2.B(6,5) = -1
+$ C.2.B(6,7) = 1
+$ C.2.B(7,3) = 1
+
+
+! -----------------------------------------------------------------------------
+! Additions in SIF file
+! -----------------------------------------------------------------------------
+Component 3
+  Name = "T2p"
+  Master Bodies Name = winding_b_plus
+  Coil Type = "Stranded"
+  Number of Turns = Real $ N_T2p
+  Resistance = Real $ R_T2p
+ 
+  ! Additions for 3D Coil
+  Electrode Boundaries(2) = Integer 28 29
+  !Circuit Equation Voltage Factor = Real 0.5 !(use for symmetry, e.g. half of the coil)
+    
+  !Coil Use W Vector = Logical True
+  !W Vector Variable Name = String "CoilCurrent e"
+  !Electrode Area = Real $ Electrode_Area
+  !Coil Normal(3) = Real 1. 1. 0
+  !Master Bodies(1) = Integer 5
+
+End 
+
+Component 4
+  Name = "T2m"
+  Master Bodies Name = winding_b_minus
+  Coil Type = "Stranded"
+  Number of Turns = Real $ N_T2m
+  Resistance = Real $ R_T2m
+ 
+  ! Additions for 3D Coil
+  Electrode Boundaries(2) = Integer 9 10
+  !Circuit Equation Voltage Factor = Real 0.5 !(use for symmetry, e.g. half of the coil)
+  
+  !Coil Use W Vector = Logical True
+  !W Vector Variable Name = String "CoilCurrent e"
+  !Electrode Area = Real $ Electrode_Area
+  !Coil Normal(3) = Real 1. 1. 0
+  !Master Bodies(1) = Integer 2
+
+End 
+
+! -----------------------------------------------------------------------------
+! Parameters
+! -----------------------------------------------------------------------------
+
+! General Parameters 
+$ V3 = 1000.0
+
+! Parameters in Component 5: T3p
+$ N_T3p = 20	 ! Number of Turns
+$ R_T3p = 0.021952405943709705	 ! Coil Resistance
+$ Ns_T3p = 1	 ! Sector/Symmetry Coefficient (e.g. 4 is 1/4 of the domain)
+! Parameters in Component 6: T3m
+$ N_T3m = 20	 ! Number of Turns
+$ R_T3m = 0.021952405943709705	 ! Coil Resistance
+$ Ns_T3m = 1	 ! Sector/Symmetry Coefficient (e.g. 4 is 1/4 of the domain)
+
+! -----------------------------------------------------------------------------
+! Matrix Size Declaration and Matrix Initialization
+! -----------------------------------------------------------------------------
+$ C.3.variables = 8
+$ C.3.perm = zeros(C.3.variables)
+$ C.3.A = zeros(C.3.variables,C.3.variables)
+$ C.3.B = zeros(C.3.variables,C.3.variables)
+
+! -----------------------------------------------------------------------------
+! Dof/Unknown Vector Definition
+! -----------------------------------------------------------------------------
+$ C.3.name.1 = "i_V3"
+$ C.3.name.2 = "i_component(5)"
+$ C.3.name.3 = "i_component(6)"
+$ C.3.name.4 = "v_V3"
+$ C.3.name.5 = "v_component(5)"
+$ C.3.name.6 = "v_component(6)"
+$ C.3.name.7 = "u_1_circuit_3"
+$ C.3.name.8 = "u_3_circuit_3"
+
+! -----------------------------------------------------------------------------
+! Source Vector Definition
+! -----------------------------------------------------------------------------
+$ C.3.source.8 = "V3_Source"
+
+! -----------------------------------------------------------------------------
+! KCL Equations
+! -----------------------------------------------------------------------------
+$ C.3.B(0,0) = 1
+$ C.3.B(0,1) = -1
+$ C.3.B(1,1) = 1
+$ C.3.B(1,2) = 1
+
+! -----------------------------------------------------------------------------
+! KVL Equations
+! -----------------------------------------------------------------------------
+$ C.3.B(2,3) = 1
+$ C.3.B(2,6) = 1
+$ C.3.B(3,4) = -1
+$ C.3.B(3,6) = -1
+$ C.3.B(3,7) = 1
+
+! -----------------------------------------------------------------------------
+! Component Equations
+! -----------------------------------------------------------------------------
+$ C.3.B(6,5) = -1
+$ C.3.B(6,7) = 1
+$ C.3.B(7,3) = 1
+
+
+! -----------------------------------------------------------------------------
+! Additions in SIF file
+! -----------------------------------------------------------------------------
+Component 5
+  Name = "T3p"
+  Master Bodies Name = winding_c_plus
+  Coil Type = "Stranded"
+  Number of Turns = Real $ N_T3p
+  Resistance = Real $ R_T3p
+ 
+  ! Additions for 3D Coil
+  Electrode Boundaries(2) = Integer 15 16
+  !Circuit Equation Voltage Factor = Real 0.5 !(use for symmetry, e.g. half of the coil)
+    
+  !Coil Use W Vector = Logical True
+  !W Vector Variable Name = String "CoilCurrent e"
+  !Electrode Area = Real $ Electrode_Area
+  !Coil Normal(3) = Real 1. 1. 0
+  !Master Bodies(1) = Integer 3
+
+End 
+
+Component 6
+  Name = "T3m"
+  Master Bodies Name = winding_c_minus
+  Coil Type = "Stranded"
+  Number of Turns = Real $ N_T3m
+  Resistance = Real $ R_T3m
+ 
+  ! Additions for 3D Coil
+  Electrode Boundaries(2) = Integer 34 35
+  !Circuit Equation Voltage Factor = Real 0.5 !(use for symmetry, e.g. half of the coil)
+    
+  !Coil Use W Vector = Logical True
+  !W Vector Variable Name = String "CoilCurrent e"
+  !Electrode Area = Real $ Electrode_Area
+  !Coil Normal(3) = Real 1. 1. 0
+  !Master Bodies(1) = Integer 6
+
+End 
+
+! -----------------------------------------------------------------------------
+! Sources in SIF 
+! -----------------------------------------------------------------------------
+
+Body Force 1
+  V1_Source = Variable "time" 
+  	 Real MATC "V1*sin(we*tx)"
+  V2_Source = Variable "time" 
+  	 Real MATC "V2*sin(we*tx + 2*pi/3)"
+  V3_Source = Variable "time" 
+  	 Real MATC "V3*sin(we*tx - 2*pi/3)"
+End
+
+! -----------------------------------------------------------------------------
+! End of Circuit
+! -----------------------------------------------------------------------------
